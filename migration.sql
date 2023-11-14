@@ -31,6 +31,8 @@ CREATE TABLE pets (
 INSERT INTO pets (name, kind, age, ownerid)
 VALUES ('Fang', 'Dog', 10, 1);
 INSERT INTO pets (name, kind, age, ownerid)
+VALUES ('Fluffy', 'Dog', 10, 1);
+INSERT INTO pets (name, kind, age, ownerid)
 VALUES ('Hedwig', 'Owl', 2, 2);
 INSERT INTO pets (name, kind, age, ownerid)
 VALUES ('Crookshanks', 'Cat', 8, 3);
@@ -39,7 +41,7 @@ VALUES ('Scabbers', 'Rat', 43, 4);
 INSERT INTO pets (name, kind, age, ownerid)
 VALUES ('Fawkes', 'Phoenix', 10, 5);
 INSERT INTO pets (name, kind, age, ownerid)
-VALUES ('Buckbeak', 'Hippogriff', 2, 1);
+VALUES ('Buckbeak', 'Hippogriff', 2, 2);
 INSERT INTO pets (name, kind, age, ownerid)
 VALUES ('Trevor', 'Toad', 8, 6);
 INSERT INTO pets (name, kind, age, ownerid)
