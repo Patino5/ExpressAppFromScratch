@@ -11,13 +11,83 @@
     <title>Hogwarts School of Witchcraft and Wizardry</title>
 </head>
 <body>
+    <!--  Header  -->
     <header>
         <h1>Welcome to the Wizarding World</h1>
         <p>Your magical journey begins here!</p>
     </header>
+    <!--  Main Body -->
+    <div class="container">
+        <button id="btn">Click for pets</button>
+        <button id="ownerBtn">Click for Owners</button>
+    </div>
+    <div id="displayArea">
+        <!-- Injected Data -->
+    </div>   
 
-    <button id="getone"></button>
+    <!--         Create Forms         -->
+    <h3>Create a Pet</h3>
+    
+    <div class="container">
+        
+        <form id="petForm"> 
+            <div class="container-group">
+                <label for="name">Pet Name:</label>
+                <input type="text" id="name" name='name' required>
+            </div>
 
+            <div class="container-group">
+                <label for="kind">Pet Type:</label>
+                <input type="text" id="kind" name="kind" required>
+            </div>
+
+            <div class="container-group">
+                <label for="age">Pet Age:</label>
+                <input type="number" min="0" id="age" name="age" required>
+            </div>
+            
+            <div class="container-group">
+                <label for="ownerid">Owner's ID:</label>
+                <input type="number" min="1" id="ownerid" name="ownerid" required>
+            </div>
+            
+            <div class="container-group">
+                <button id="subBtn" type="submit">Submit</button>
+            </div>
+        </form> 
+    </div>
+
+    <!--       Delete Forms       -->
+    <h3>Delete Pet</h3>
+    <div class="container">
+        
+        <form id="deletePet">
+            <div class="container-group">
+                <label for="petId">Pet ID:</label>
+                <input type="number" id="petId" name="petId" min="1" required>
+            </div>
+            <div class="container-group">
+                <button id="deletePetBtn" type="submit">Delete Pet</button>
+            </div>
+        </form>
+
+    </div>
+
+    <h3>Delete Owner</h3>
+    <div class="container">
+        
+        <form id="deleteOwner">
+            <div class="container-group">
+                <label for="ownerId">Owner ID:</label>
+                <input type="number" id="ownerId" name="ownerId" min="1" required>
+            </div>
+            <div class="container-group">
+                <button id="deleteOwnerBtn" type="submit">Delete Owner</button>
+            </div>
+        </form>
+
+    </div>
+    <!--  Footer  -->
     <footer>
         <p>&copy; 2023 Wizarding World Pet Owners</p>
     </footer>
