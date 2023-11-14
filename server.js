@@ -99,7 +99,6 @@ app.post('/api/owners', async (req, res) => {
     }
 })
 
-
 app.post('/api/pets', async (req, res) => {
     const newPet = req.body
     if ([newPet.name, newPet.kind, newPet.age, newPet.ownerid].includes(undefined)) {
@@ -115,8 +114,85 @@ app.post('/api/pets', async (req, res) => {
     }
 })
 
+app.put('/api/owners/:id', async (req, res) => {
+    const updatedOwner = req.body
+    const { id } = req.params
 
+    if (id >= 0){
+        try {
+            const { rows } = await pool.query(`UPDATE owners SET firstname = '${updatedOwner.firstName}', lastname = '${updatedOwner.lastName}', gender = '${updatedOwner.gender}' WHERE id = ${id} RETURNING *;`)
 
+            if (rows.length === 1) {
+                res.status(200).json(rows)
+            } else {
+                res.status(404).send('Not Found')
+            }
+        } catch (error) {
+            res.status(500).send('Internal Service Error')
+        }
+     } else {
+        res.status(400).send('Bad Request')
+     }
+})
+
+app.put('/api/pets/:id' , async (req, res) => {
+     const updatedPet = req.body
+     const { id } = req.params
+
+     if (id >= 0) {
+        try {
+            const { rows } = await pool.query(`UPDATE pets SET name = '${updatedPet.name}', kind = '${updatedPet.kind}', age = ${updatedPet.age}, ownerid = ${updatedPet.ownerid} WHERE id = ${id} RETURNING *;`)
+
+            if (rows.length === 1) {
+                res.status(200).json(rows)
+            } else {
+                res.status(404).send('Not Found')
+            }
+        } catch (error) {
+            res.status(500).send('Internal Service Error')
+        }
+     } else {
+        res.status(400).send('Bad Request')
+     }
+})
+
+app.delete('/api/owners/:id', async (req, res) => {
+    const { id } = req.params
+    if (id >= 0) {
+        try {
+            const { rows } = await pool.query(`DELETE FROM owners WHERE id = ${id} RETURNING *;`)
+
+            if (rows.length === 1) {
+                res.status(200).json(rows)
+            } else {
+                res.status(404).send('Not Found')
+            }
+        } catch (error) {
+             res.status(500).send('Internal Server Error')
+        }
+    } else {
+        res.status(404).send('Bad Request')
+    }
+})
+
+app.delete('/api/pets/:id', async (req, res) => {
+    const { id } = req.params
+    if (id >= 0) {
+        try {
+            const { rows } = await pool.query(`DELETE FROM pets WHERE id = ${id} RETURNING *;`)
+
+            if (rows.length === 1) {
+                res.status(200).json(rows)
+            } else {
+                res.status(404).send('Not Found') 
+            }
+        } catch (error) {
+            res.status(500).send('Internal Server Error')
+        }
+    } else {
+        res.status(404).send('Bad Request')
+    }
+})
 
 app.listen(PORT, () => {
     console.log(`Listening on port: ${PORT}`);
