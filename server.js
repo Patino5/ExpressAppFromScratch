@@ -17,7 +17,7 @@ const pool = new Pool ({
 
 app.use(cors())
 app.use(express.json())
-app.use(express.static(__dirname, + 'public'))
+app.use(express.static(__dirname, + '/public'))
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html')
@@ -43,6 +43,79 @@ app.get('/api/pets', async (req, res) => {
         res.json(error)
     }
 })
+
+// get one routes
+
+app.get('/api/owners/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const { rows } = await pool.query(`SELECT * FROM owners WHERE id = ${id};`)
+
+        if (rows.length === 1) {
+            res.status(200).json(rows)
+        } else {
+            res.status(404).send('Not Found')
+        }
+
+    } catch (error) {
+        res.status(500).send('Server Error')
+        res.json(error)
+    }
+})
+
+app.get('/api/pets/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { rows } = await pool.query(`SELECT * FROM pets WHERE id = ${id};`);
+
+        if (rows.length === 1) {
+            res.status(200).json(rows);
+        } else {
+            res.status(404).send('Not Found');
+        }
+
+    } catch (error) {
+        res.status(500).send('Server Error');
+        console.error(error);
+    }
+});
+
+app.post('/api/owners', async (req, res) => {
+    const owner = req.body
+    if ([owner.firstName, owner.lastName, owner.gender].includes(undefined)) {
+        res.status(400).send('Bad Request')
+    } else { 
+        try {
+            const { rows } = await pool.query(`INSERT INTO owners (firstname, lastname, gender) VALUES ($1, $2, $3) RETURNING *;`, [
+                owner.firstName,
+                owner.lastName,
+                owner.gender
+            ]);
+            res.status(201).json(rows[0])
+        } catch (error) {
+            res.status(500).json(error)
+            res.send('Internal Server Error')
+        }
+    }
+})
+
+
+app.post('/api/pets', async (req, res) => {
+    const newPet = req.body
+    if ([newPet.name, newPet.kind, newPet.age, newPet.ownerid].includes(undefined)) {
+        res.status(400).send('Bad Request')
+    } else { 
+        try {
+            const { rows } = await pool.query(`INSERT INTO pets (name, kind, age, ownerid) VALUES ('${newPet.name}', '${newPet.kind}', ${newPet.age}, ${newPet.ownerid}) RETURNING *;`)
+            res.status(201).json(rows[0])
+        } catch (error) {
+            res.status(500).json(error)
+            res.send('Internal Server Error')
+        }
+    }
+})
+
+
 
 
 app.listen(PORT, () => {
