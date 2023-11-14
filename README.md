@@ -35,7 +35,7 @@ The Hogwarts Database consists of two main tables:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/hogwarts-database.git
+   git clone https://github.com/Patino5/ExpressAppFromScratch.git
 Install dependencies:
 
 bash
