@@ -81,15 +81,15 @@ app.get('/api/pets/:id', async (req, res) => {
 });
 
 app.post('/api/owners', async (req, res) => {
-    const owner = req.body
-    if ([owner.firstName, owner.lastName, owner.gender].includes(undefined)) {
+    const {firstname, lastname, gender} = req.body
+    if ([firstname, lastname, gender].includes(undefined)) {
         res.status(400).send('Bad Request')
     } else { 
         try {
             const { rows } = await pool.query(`INSERT INTO owners (firstname, lastname, gender) VALUES ($1, $2, $3) RETURNING *;`, [
-                owner.firstName,
-                owner.lastName,
-                owner.gender
+                firstname,
+                lastname,
+                gender
             ]);
             res.status(201).json(rows[0])
         } catch (error) {
@@ -115,12 +115,12 @@ app.post('/api/pets', async (req, res) => {
 })
 
 app.put('/api/owners/:id', async (req, res) => {
-    const updatedOwner = req.body
+    const {firstname, lastname, gender} = req.body
     const { id } = req.params
 
     if (id >= 0){
         try {
-            const { rows } = await pool.query(`UPDATE owners SET firstname = '${updatedOwner.firstName}', lastname = '${updatedOwner.lastName}', gender = '${updatedOwner.gender}' WHERE id = ${id} RETURNING *;`)
+            const { rows } = await pool.query(`UPDATE owners SET firstname = '${firstname}', lastname = '${lastname}', gender = '${gender}' WHERE id = ${id} RETURNING *;`)
 
             if (rows.length === 1) {
                 res.status(200).json(rows)
@@ -136,12 +136,12 @@ app.put('/api/owners/:id', async (req, res) => {
 })
 
 app.put('/api/pets/:id' , async (req, res) => {
-     const updatedPet = req.body
+     const {name, kind, age, ownerid} = req.body
      const { id } = req.params
 
      if (id >= 0) {
         try {
-            const { rows } = await pool.query(`UPDATE pets SET name = '${updatedPet.name}', kind = '${updatedPet.kind}', age = ${updatedPet.age}, ownerid = ${updatedPet.ownerid} WHERE id = ${id} RETURNING *;`)
+            const { rows } = await pool.query(`UPDATE pets SET name = '${name}', kind = '${kind}', age = ${age}, ownerid = ${ownerid} WHERE id = ${id} RETURNING *;`)
 
             if (rows.length === 1) {
                 res.status(200).json(rows)
